@@ -47,7 +47,7 @@ out.println("Server Host Name :: "+inetAddress.getHostName());
 <hr>
 <hr>
 <p align=center>Ankit Sharma - Youtuber , DevOps Engineer and may more skills unlocking in future.</p>
-<p align=center><small>Copyrights 2022 by <a href="http://mithuntechnologies.com/">Ankit Sharma</a> </small></p>
+<p align=center><small>Copyrights 2022 by <a href="https://www.linkedin.com/in/ankitttsharmaaa/">Ankit Sharma</a> </small></p>
 
 </body>
 </html>
