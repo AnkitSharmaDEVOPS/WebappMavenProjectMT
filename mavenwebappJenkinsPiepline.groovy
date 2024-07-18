@@ -24,9 +24,9 @@ pipeline {
             steps {
                 sshagent(['mvncreds']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${maven_server} << EOF
+                    ssh -o StrictHostKeyChecking=no ${maven_server} '
                     mvn clean package
-EOF
+                    '
                     """
                 }
             }
@@ -35,10 +35,10 @@ EOF
             steps {
                 sshagent(['mvncreds']) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ${maven_server} << EOF
+                    ssh -o StrictHostKeyChecking=no ${maven_server} '
                     cp -r /home/ubuntu/target /tmp
                     scp -o StrictHostKeyChecking=no -r /tmp/target ${jenkins_server}:/home/ubuntu
-EOF
+                    '
                     """
                 }
             }
