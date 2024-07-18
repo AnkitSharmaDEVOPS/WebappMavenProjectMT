@@ -56,11 +56,25 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no  ${docker_server} '
                     docker build -t image_${env.BUILD_NUMBER} -f docker .
-                    docker run -d --name cont_${env.BUILD_NUMBER} -p 80:8080 image_${env.BUILD_NUMBER}
                     '               
                 """
                 }
             }
         }//stage5closing
+        stage('Docker push') {
+            steps {
+                sshagent(['Docker_creds']) {
+                    withCredentials([usernamePassword(credentialsId: 'Dockerhub_creds', passwordVariable: 'DHPass', usernameVariable: 'DHUser')]) {
+                         sh """
+                         ssh -o StrictHostKeyChecking=no  ${docker_server} '
+                           echo "$DHPass" | docker login -u $DHUser  --password-stdin
+                           docker tag image_${env.BUILD_NUMBER} ankitsharmaa/image_${env.BUILD_NUMBER}
+                           docker push ankitsharmaa/image_${env.BUILD_NUMBER}
+                         '               
+                        """
+                    }
+                }
+            }
+        }//stage6closing
     }//StagesClosing
 }//PipelineClosing
