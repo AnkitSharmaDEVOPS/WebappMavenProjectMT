@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-ns
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mavenwebappdeploy
+  namespace: test-ns
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mavenwebapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      name: mavenwebapppod
+      labels:
+        app: mavenwebapp
+    spec:
+      containers:
+        - name: mavenwebappcontainer
+          image: ankitsharmaa/image_64  ###this is chnaging with new image build
+          ports:
+            - containerPort: 8080
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mavenwebappsvc
+  namespace: test-ns
+spec:
+  selector:
+    app: mavenwebapp
+  type: NodePort
+  ports:
+    - name: mavenwebappport
+      port: 80
+      targetPort: 8080
+      nodePort: 32123
